@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+wavelength = 500e-9  # Wavelength in meters (500 nm)
+frequency = c / wavelength  # Frequency in Hz
+
+# Function to calculate the intensity of light
+# I = I0 * cos^2(k * x - omega * t)
+# where I0 is the maximum intensity, k is the wave number, omega is the angular frequency
+
+def intensity(x, t, I0):
+    k = 2 * np.pi / wavelength  # Wave number
+    omega = 2 * np.pi * frequency  # Angular frequency
+    return I0 * np.cos(k * x - omega * t) ** 2
+
+# Main calculation
+x = np.linspace(0, 1e-6, 1000)  # Position from 0 to 1 micrometer
+I0 = 1  # Maximum intensity
+
+# Plotting the intensity over time
+plt.figure(figsize=(10, 6))
+for t in np.linspace(0, 1e-12, 5):  # Time from 0 to 1 picosecond
+    plt.plot(x, intensity(x, t, I0), label=f't = {t:.1e} s')
+
+plt.title('Intensity of Light Over Time')
+plt.xlabel('Position (m)')
+plt.ylabel('Intensity (a.u.)')
+plt.legend()
+plt.grid()
+plt.show()
