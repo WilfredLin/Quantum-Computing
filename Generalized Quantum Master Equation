@@ -1,0 +1,47 @@
+import numpy as np
+
+# Constants definition
+hbar = 1.0545718e-34  # Reduced Planck's constant
+
+# Function to create the density matrix
+
+def create_density_matrix(state_vector):
+    return np.outer(state_vector, np.conjugate(state_vector))
+
+# Function to apply the Generalized Quantum Master Equation
+
+def generalized_quantum_master_equation(rho, H, L, t):
+    # rho: density matrix
+    # H: Hamiltonian operator
+    # L: Lindblad operators
+    # t: time
+    
+    # Time evolution operator
+    U = np.exp(-1j * H * t / hbar)
+    
+    # Apply Hamiltonian evolution
+    rho_t = U @ rho @ U.conjugate().T
+    
+    # Apply Lindblad terms
+    for l in L:
+        rho_t += (l @ rho @ l.conjugate().T) - 0.5 * (l.conjugate().T @ l @ rho + rho @ l.conjugate().T @ l)
+    
+    return rho_t
+
+# Main calculation
+if __name__ == '__main__':
+    # Example state vector
+    state_vector = np.array([1, 0])  # |0> state
+    density_matrix = create_density_matrix(state_vector)
+    
+    # Example Hamiltonian and Lindblad operators
+    H = np.array([[0, 1], [1, 0]])  # Pauli-X Hamiltonian
+    L = [np.array([[0, 1], [0, 0]])]  # Simple jump operator
+    
+    # Time evolution
+    t = 0.1  # Time step
+    evolved_density_matrix = generalized_quantum_master_equation(density_matrix, H, L, t)
+    
+    # Output
+    print("Evolved Density Matrix:")
+    print(evolved_density_matrix)
