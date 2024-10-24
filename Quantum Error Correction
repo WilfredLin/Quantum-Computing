@@ -1,0 +1,41 @@
+import numpy as np
+
+# Constants
+num_qubits = 3  # Number of qubits in the code
+num_errors = 1  # Number of errors to correct
+
+# Function to create the initial state of the qubits
+def create_initial_state():
+    # Starting with the |0> state for all qubits
+    return np.array([1, 0, 0, 0, 0, 0, 0, 0])  # |000>
+
+# Function to apply a bit-flip error
+def apply_bit_flip(state, qubit_index):
+    # Bit-flip error on the specified qubit
+    if qubit_index == 0:
+        return np.array([0, 1, 0, 0, 0, 0, 0, 0])  # |100>
+    elif qubit_index == 1:
+        return np.array([0, 0, 1, 0, 0, 0, 0, 0])  # |010>
+    elif qubit_index == 2:
+        return np.array([0, 0, 0, 1, 0, 0, 0, 0])  # |001>
+    return state
+
+# Function to decode and correct the state
+def decode_and_correct(state):
+    # Simple majority vote for error correction
+    if np.sum(state[0:4]) > np.sum(state[4:8]):
+        return np.array([1, 0, 0, 0, 0, 0, 0, 0])  # Correct to |000>
+    else:
+        return np.array([0, 0, 0, 0, 1, 0, 0, 0])  # Correct to |111>
+
+# Main calculation
+initial_state = create_initial_state()
+print("Initial State:", initial_state)
+
+# Simulate a bit-flip error on the first qubit
+error_state = apply_bit_flip(initial_state, 0)
+print("State After Error:", error_state)
+
+# Decode and correct the state
+corrected_state = decode_and_correct(error_state)
+print("Corrected State:", corrected_state)
