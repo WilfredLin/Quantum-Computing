@@ -1,0 +1,62 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class DoubleWellParametricOscillator:
+    def __init__(self, omega, kappa, driving_amplitude, driving_frequency):
+        self.omega = omega
+        self.kappa = kappa
+        self.driving_amplitude = driving_amplitude
+        self.driving_frequency = driving_frequency
+
+    def effective_hamiltonian(self, n_levels):
+        # Create a matrix to represent the Hamiltonian
+        H = np.zeros((n_levels, n_levels), dtype=complex)
+        for n in range(n_levels):
+            # Diagonal terms (energy levels)
+            H[n, n] = self.omega * (n + 0.5) - self.kappa * np.cos(self.driving_frequency * n)
+            for m in range(n_levels):
+                if n != m:
+                    # Off-diagonal terms (interaction due to driving)
+                    H[n, m] = (self.driving_amplitude / 2) * (np.sqrt(n + 1) * np.sqrt(m) *
+                                                                np.exp(-1j * self.driving_frequency * (m - n)))
+        return H
+
+    def calculate_energy_levels(self, n_levels):
+        H = self.effective_hamiltonian(n_levels)
+        energies, _ = np.linalg.eig(H)
+        return np.sort(energies)
+
+    def observe_pairwise_level_degeneracies(self, n_levels):
+        energy_levels = self.calculate_energy_levels(n_levels)
+        degeneracies = {}
+        for energy in energy_levels:
+            if energy in degeneracies:
+                degeneracies[energy] += 1
+            else:
+                degeneracies[energy] = 1
+        return degeneracies
+
+    def plot_energy_levels(self, n_levels):
+        energy_levels = self.calculate_energy_levels(n_levels)
+        plt.figure(figsize=(10, 6))
+        plt.scatter(range(len(energy_levels)), energy_levels, color='blue', label='Energy Levels')
+        plt.title('Energy Levels of Double-Well Parametric Oscillator')
+        plt.xlabel('Level Index')
+        plt.ylabel('Energy')
+        plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
+        plt.grid()
+        plt.legend()
+        plt.show()
+
+# Example usage
+oscillator = DoubleWellParametricOscillator(omega=1.0, kappa=0.1, driving_amplitude=0.5, driving_frequency=1.0)
+n_levels = 10
+energy_levels = oscillator.calculate_energy_levels(n_levels)
+degeneracies = oscillator.observe_pairwise_level_degeneracies(n_levels)
+
+print("Energy Levels:")
+print(energy_levels)
+print("Pairwise Level Degeneracies:")
+print(degeneracies)
+
+oscillator.plot_energy_levels(n_levels)
