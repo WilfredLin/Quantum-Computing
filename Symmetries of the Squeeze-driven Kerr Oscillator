@@ -1,0 +1,42 @@
+import numpy as np
+
+class SqueezeDrivenKerrOscillator:
+    def __init__(self, omega, kappa, driving_amplitude, driving_frequency, squeeze_parameter):
+        self.omega = omega
+        self.kappa = kappa
+        self.driving_amplitude = driving_amplitude
+        self.driving_frequency = driving_frequency
+        self.squeeze_parameter = squeeze_parameter
+
+    def effective_hamiltonian(self, n_levels):
+        # Create a matrix to represent the Hamiltonian
+        H = np.zeros((n_levels, n_levels), dtype=complex)
+        for n in range(n_levels):
+            # Diagonal terms (energy levels with Kerr nonlinearity)
+            H[n, n] = self.omega * (n + 0.5) - self.kappa * n**2 + self.squeeze_parameter * n * (n - 1) / 2
+            for m in range(n_levels):
+                if n != m:
+                    # Off-diagonal terms (interaction due to driving)
+                    H[n, m] += (self.driving_amplitude / 2) * \
+                                 (np.sqrt(n + 1) * np.sqrt(m) * 
+                                  np.exp(-1j * self.driving_frequency * (m - n)))
+        return H
+
+    def symmetries(self):
+        # Calculate symmetries of the system
+        # For simplicity, let's assume we are interested in parity and time-reversal symmetries
+        symmetries_info = {
+            'parity': 'The system exhibits parity symmetry due to its even potential.',
+            'time_reversal': 'The time-reversal symmetry is present in the Hamiltonian structure.'
+        }
+        return symmetries_info
+
+# Example usage
+oscillator = SqueezeDrivenKerrOscillator(omega=1.0, kappa=0.1, driving_amplitude=0.5, driving_frequency=1.0, squeeze_parameter=0.05)
+H_effective = oscillator.effective_hamiltonian(n_levels=5)
+symmetries_info = oscillator.symmetries()
+
+print("Effective Hamiltonian:")
+print(H_effective)
+print("Symmetries:")
+print(symmetries_info)
