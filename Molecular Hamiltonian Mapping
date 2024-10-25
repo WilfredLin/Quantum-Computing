@@ -1,0 +1,32 @@
+import numpy as np
+
+class MolecularHamiltonian:
+    def __init__(self, coefficients, operators):
+        self.coefficients = coefficients
+        self.operators = operators
+
+    def get_hamiltonian_matrix(self):
+        h_matrix = np.zeros((len(self.operators), len(self.operators)), dtype=complex)
+        for i, coeff in enumerate(self.coefficients):
+            h_matrix += coeff * self.operators[i]
+        return h_matrix
+
+class ModularCQED:
+    def __init__(self, hamiltonian):
+        self.hamiltonian = hamiltonian
+
+    def map_to_cqed(self):
+        cqed_hamiltonian = self.hamiltonian.get_hamiltonian_matrix()  # Placeholder for actual mapping logic
+        # Implement mapping logic from molecular to modular cQED Hamiltonian here
+        return cqed_hamiltonian
+
+# Example usage
+if __name__ == '__main__':
+    # Define coefficients and operators for a simple molecular Hamiltonian
+    coefficients = [1.0, 0.5]
+    operators = [np.array([[0, 1], [1, 0]], dtype=complex), np.array([[0, 0], [0, 1]], dtype=complex)]
+
+    molecular_hamiltonian = MolecularHamiltonian(coefficients, operators)
+    cqed_processor = ModularCQED(molecular_hamiltonian)
+    mapped_hamiltonian = cqed_processor.map_to_cqed()
+    print(mapped_hamiltonian)
