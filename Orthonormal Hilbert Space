@@ -1,0 +1,42 @@
+def main():
+    import numpy as np
+
+    class HilbertSpace:
+        def __init__(self, dimension):
+            self.dimension = dimension
+            self.basis_vectors = self.create_basis()
+
+        def create_basis(self):
+            """Create an orthonormal basis for the Hilbert space."""
+            return [np.eye(1, self.dimension, k).flatten() for k in range(self.dimension)]
+
+        def inner_product(self, vector1, vector2):
+            """Calculate the inner product of two vectors."""
+            return np.dot(vector1.conj(), vector2)
+
+        def norm(self, vector):
+            """Calculate the norm of a vector."""
+            return np.sqrt(self.inner_product(vector, vector))
+
+        def normalize(self, vector):
+            """Normalize a vector."""
+            norm = self.norm(vector)
+            if norm == 0:
+                raise ValueError("Cannot normalize a zero vector")
+            return vector / norm
+
+        def display_basis(self):
+            """Display the basis vectors."""
+            for i, vector in enumerate(self.basis_vectors):
+                print(f"Basis vector {i}: {vector}")
+
+    # Example usage
+    if __name__ == "__main__":
+        hilbert_space = HilbertSpace(dimension=3)
+        hilbert_space.display_basis()
+        vector = np.array([1, 2, 3])
+        normalized_vector = hilbert_space.normalize(vector)
+        print(f"Normalized vector: {normalized_vector}")
+
+if __name__ == "__main__":
+    main()
