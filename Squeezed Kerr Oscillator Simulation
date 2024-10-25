@@ -1,0 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+class SqueezedKerrOscillator:
+    def __init__(self, alpha, kappa, gamma, squeeze_factor, time_span):
+        self.alpha = alpha
+        self.kappa = kappa
+        self.gamma = gamma
+        self.squeeze_factor = squeeze_factor
+        self.time_span = time_span
+        self.initial_conditions = [0, 0]  # Initial position and momentum
+
+    def equations_of_motion(self, y, t):
+        x, p = y
+        dxdt = p
+        dpdt = -self.kappa * x - self.gamma * p + self.squeezing_term(t)
+        return [dxdt, dpdt]
+
+    def squeezing_term(self, t):
+        return self.squeeze_factor * np.sin(t)  # Example squeezing term
+
+    def simulate(self):
+        t = np.linspace(0, self.time_span, 1000)
+        solution = odeint(self.equations_of_motion, self.initial_conditions, t)
+        return t, solution
+
+    def plot_results(self, t, solution):
+        plt.figure(figsize=(12, 6))
+        plt.subplot(211)
+        plt.plot(t, solution[:, 0], label='Position (x)')
+        plt.title('Squeezed Kerr-nonlinear Oscillator Dynamics')
+        plt.xlabel('Time')
+        plt.ylabel('Position')
+        plt.legend()
+
+        plt.subplot(212)
+        plt.plot(t, solution[:, 1], label='Momentum (p)', color='orange')
+        plt.xlabel('Time')
+        plt.ylabel('Momentum')
+        plt.legend()
+
+        plt.tight_layout()
+        plt.show()
+
+# Example usage
+alpha = 1.0
+kappa = 0.5
+gamma = 0.3
+squeeze_factor = 0.1
+time_span = 20
+oscillator = SqueezedKerrOscillator(alpha, kappa, gamma, squeeze_factor, time_span)
+t, solution = oscillator.simulate()
+oscillator.plot_results(t, solution)
