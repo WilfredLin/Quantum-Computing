@@ -1,0 +1,44 @@
+import numpy as np
+
+class QuantumState:
+    def __init__(self, state_vector):
+        self.state_vector = state_vector / np.linalg.norm(state_vector)  # Normalize the state vector
+
+    def measure(self, observable):
+        """Perform a measurement on the quantum state with the given observable."""
+        probabilities = np.abs(observable @ self.state_vector) ** 2
+        outcome = np.random.choice(len(probabilities), p=probabilities)
+        return outcome
+
+class Stabilizer:
+    def __init__(self, generators):
+        self.generators = generators  # List of generator matrices
+
+    def stabilizes(self, state):
+        """Check if the state is stabilized by the given generators."""
+        for generator in self.generators:
+            if not np.isclose(generator @ state, state):
+                return False
+        return True
+
+# Example usage
+if __name__ == "__main__":
+    # Define a simple quantum state
+    initial_state = np.array([1, 0])  # |0> state
+    quantum_state = QuantumState(initial_state)
+
+    # Define an observable (e.g., Pauli Z)
+    observable = np.array([[1, 0], [0, -1]])  # Pauli Z operator
+
+    # Measure the quantum state
+    measurement_result = quantum_state.measure(observable)
+    print(f"Measurement result: {measurement_result}")
+
+    # Define stabilizer generators (example for a 2-qubit state)
+    generator1 = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, -1]])  # X stabilizer
+    generator2 = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, -1], [0, -1, 0, 0]])  # Z stabilizer
+    stabilizer = Stabilizer([generator1, generator2])
+
+    # Check if the state is stabilized
+    is_stabilized = stabilizer.stabilizes(quantum_state.state_vector)
+    print(f"Is the state stabilized? {is_stabilized}")
