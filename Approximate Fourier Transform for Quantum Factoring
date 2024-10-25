@@ -1,0 +1,43 @@
+def main():
+    import numpy as np
+
+    class QuantumFourierTransform:
+        def __init__(self, n):
+            self.n = n
+            self.size = 2 ** n
+
+        def apply(self, state_vector):
+            """Apply the Quantum Fourier Transform to the given state vector."""
+            if len(state_vector) != self.size:
+                raise ValueError("State vector must have length equal to 2^n")
+            qft_matrix = self.create_qft_matrix()
+            return np.dot(qft_matrix, state_vector)
+
+        def create_qft_matrix(self):
+            """Create the Quantum Fourier Transform matrix."""
+            qft_matrix = np.zeros((self.size, self.size), dtype=complex)
+            for j in range(self.size):
+                for k in range(self.size):
+                    qft_matrix[j, k] = np.exp(2j * np.pi * j * k / self.size) / np.sqrt(self.size)
+            return qft_matrix
+
+        def display_state(self, state_vector):
+            """Display the state vector."""
+            print("State vector:")
+            for i, amplitude in enumerate(state_vector):
+                print(f"|{i}>: {amplitude}")
+
+    # Example usage
+    if __name__ == "__main__":
+        n = 2  # Example for a 2-qubit system
+        qft = QuantumFourierTransform(n)
+        
+        # Initial state vector (uniform superposition)
+        initial_state = np.array([1/np.sqrt(4)] * 4)  # 4 elements for 2 qubits
+        qft.display_state(initial_state)
+
+        transformed_state = qft.apply(initial_state)
+        qft.display_state(transformed_state)
+
+if __name__ == "__main__":
+    main()
