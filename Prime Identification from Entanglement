@@ -1,0 +1,50 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class EntanglementDynamics:
+    def __init__(self, num_qubits):
+        self.num_qubits = num_qubits
+        self.entangled_state = self.create_entangled_state()
+
+    def create_entangled_state(self):
+        # Create a simple entangled state, e.g., Bell state
+        return np.array([1/np.sqrt(2), 0, 0, 1/np.sqrt(2)])
+
+    def measure(self):
+        probabilities = np.abs(self.entangled_state) ** 2
+        return np.random.choice(range(self.num_qubits), p=probabilities)
+
+class PrimeIdentifier:
+    def __init__(self, limit):
+        self.limit = limit
+        self.primes = []
+
+    def is_prime(self, n):
+        if n <= 1:
+            return False
+        for i in range(2, int(np.sqrt(n)) + 1):
+            if n % i == 0:
+                return False
+        return True
+
+    def identify_primes(self):
+        for num in range(2, self.limit + 1):
+            if self.is_prime(num):
+                self.primes.append(num)
+
+    def plot_primes(self):
+        plt.figure(figsize=(10, 5))
+        plt.plot(self.primes, 'ro', label='Primes')
+        plt.title('Identified Prime Numbers')
+        plt.xlabel('Index')
+        plt.ylabel('Prime Number')
+        plt.legend()
+        plt.grid()
+        plt.show()
+
+# Example usage:
+if __name__ == '__main__':
+    entanglement = EntanglementDynamics(num_qubits=4)
+    prime_identifier = PrimeIdentifier(limit=100)
+    prime_identifier.identify_primes()
+    prime_identifier.plot_primes()
