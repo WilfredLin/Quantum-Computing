@@ -1,0 +1,35 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 1.0  # Speed of light
+hbar = 1.0  # Reduced Planck's constant
+m = 1.0  # Mass of the scalar field
+
+def klein_gordon(phi, t, x):
+    # Klein-Gordon equation: (∂²/∂t² - c²∂²/∂x² + m²)φ = 0
+    d2phi_dt2 = np.gradient(np.gradient(phi, t), t)
+    d2phi_dx2 = np.gradient(np.gradient(phi, x), x)
+    return d2phi_dt2 - c**2 * d2phi_dx2 + m**2 * phi
+
+# Simulation parameters
+x = np.linspace(-10, 10, 100)  # Spatial domain
+t = np.linspace(0, 10, 100)  # Time domain
+phi = np.sin(x) * np.exp(-0.1 * t[0])  # Initial condition
+
+# Time evolution
+phi_values = []
+for time in t:
+    phi = klein_gordon(phi, time, x)
+    phi_values.append(phi)
+
+# Visualization
+plt.figure(figsize=(10, 6))
+for i in range(len(t)):
+    plt.plot(x, phi_values[i], label=f't={t[i]:.1f}')
+plt.title('Klein-Gordon Equation Evolution')
+plt.xlabel('x')
+plt.ylabel('φ(x,t)')
+plt.legend()
+plt.grid()
+plt.show()
