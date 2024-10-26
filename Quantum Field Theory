@@ -1,0 +1,53 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.0545718e-34  # Reduced Planck's constant (Joule second)
+c = 299792458  # Speed of light (meters/second)
+epsilon_0 = 8.854187817e-12  # Vacuum permittivity (Farad/meter)
+
+# Define a simple scalar field
+class ScalarField:
+    def __init__(self, mass):
+        self.mass = mass
+        self.field = None
+
+    def initialize_field(self, size):
+        # Initialize the field with random values
+        self.field = np.random.rand(size)
+
+    def propagate(self, time_step):
+        # Simple propagation of the field (discrete time evolution)
+        self.field += -self.mass * self.field * time_step
+
+    def get_energy(self):
+        # Calculate the energy of the field
+        kinetic_energy = 0.5 * np.sum(np.square(np.gradient(self.field)))
+        potential_energy = 0.5 * self.mass**2 * np.sum(np.square(self.field))
+        return kinetic_energy + potential_energy
+
+# Simulation parameters
+mass = 1.0  # Mass of the scalar field
+field_size = 100  # Size of the field
+time_steps = 100  # Number of time steps
+time_step = 0.01  # Time step size
+
+# Create and initialize the scalar field
+scalar_field = ScalarField(mass)
+scalar_field.initialize_field(field_size)
+
+# Store energy over time for plotting
+energies = []
+
+# Time evolution of the field
+for _ in range(time_steps):
+    scalar_field.propagate(time_step)
+    energies.append(scalar_field.get_energy())
+
+# Plot the energy over time
+plt.plot(energies)
+plt.title('Energy of the Scalar Field over Time')
+plt.xlabel('Time Step')
+plt.ylabel('Energy (Joules)')
+plt.grid()
+plt.show()
