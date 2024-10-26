@@ -1,0 +1,41 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants definition
+m = 1.0  # mass
+k = 1.0  # spring constant
+
+def lagrangian(q, q_dot):
+    T = 0.5 * m * q_dot**2  # Kinetic energy
+    V = 0.5 * k * q**2      # Potential energy
+    return T - V
+
+# Equation of motion (Euler-Lagrange equation)
+def equations_of_motion(q, q_dot):
+    return -k * q
+
+# Simulation parameters
+num_steps = 1000
+time = np.linspace(0, 10, num_steps)
+q = np.zeros(num_steps)
+q_dot = np.zeros(num_steps)
+
+# Initial conditions
+q[0] = 1.0  # initial position
+q_dot[0] = 0.0  # initial velocity
+
+# Time integration (simple Euler method)
+for i in range(1, num_steps):
+    q_dot[i] = q_dot[i-1] + equations_of_motion(q[i-1], q_dot[i-1]) * (time[i] - time[i-1])
+    q[i] = q[i-1] + q_dot[i-1] * (time[i] - time[i-1])
+
+# Visualization
+plt.figure(figsize=(10, 5))
+plt.plot(time, q, label='Position (q)')
+plt.plot(time, q_dot, label='Velocity (q_dot)')
+plt.title('First Order Lagrangian Dynamics')
+plt.xlabel('Time')
+plt.ylabel('Position and Velocity')
+plt.legend()
+plt.grid()
+plt.show()
