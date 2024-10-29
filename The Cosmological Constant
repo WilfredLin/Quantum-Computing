@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+c = 3.0e8  # Speed of light in m/s
+G = 6.674e-11  # Gravitational constant in m^3/kg/s^2
+rho_critical = 1.88e-26  # Critical density in kg/m^3
+
+# Define the cosmological constant
+def cosmological_constant(rho):
+    return (rho - rho_critical) * (c**2) / (8 * np.pi * G)
+
+# Create a range of energy densities
+rho_values = np.linspace(0, 2 * rho_critical, 100)
+
+# Calculate the cosmological constant for these densities
+lambda_values = cosmological_constant(rho_values)
+
+# Plotting the results
+plt.figure(figsize=(12, 8))
+plt.plot(rho_values, lambda_values, label='Cosmological Constant Λ(ρ)')
+plt.title('Cosmological Constant in Quantum Field Theory')
+plt.xlabel('Energy Density ρ (kg/m³)')
+plt.ylabel('Cosmological Constant Λ (m⁻²)')
+plt.axhline(0, color='black', lw=0.5, ls='--')
+plt.axvline(rho_critical, color='red', lw=0.5, ls='--', label='Critical Density ρ_c')
+plt.legend()
+plt.grid()
+plt.show()
