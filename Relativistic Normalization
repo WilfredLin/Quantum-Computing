@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0e-30  # Mass of the particle in kg
+
+# Define the normalization factor for relativistic states
+def relativistic_normalization(E, p):
+    """Calculate the relativistic normalization factor for a given energy and momentum."""
+    return 1 / np.sqrt(2 * np.pi * (E**2 - (p * c)**2))
+
+# Define parameters for various states
+momenta = np.linspace(0, 1e-22, 100)  # Momentum values in kg*m/s
+energies = np.sqrt((momenta * c)**2 + (m * c**2)**2)  # Energy values using E^2 = p^2*c^2 + m^2*c^4
+
+# Calculate normalization factors
+normalization_factors = [relativistic_normalization(E, p) for E, p in zip(energies, momenta)]
+
+# Plotting the normalization factors
+plt.figure(figsize=(12, 8))
+plt.plot(momenta, normalization_factors, label='Normalization Factor', color='blue')
+plt.title('Relativistic Normalization Factor vs Momentum')
+plt.xlabel('Momentum p (kg*m/s)')
+plt.ylabel('Normalization Factor')
+plt.legend()
+plt.grid()
+plt.show()
