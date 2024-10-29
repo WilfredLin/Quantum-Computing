@@ -1,0 +1,26 @@
+import numpy as np
+
+class FeynmanPropagator:
+    def __init__(self, mass):
+        self.mass = mass
+
+    def propagator(self, x, y, t):
+        """Calculate the Feynman propagator for a scalar field."""
+        # The Feynman propagator in position space for a scalar field
+        # is given by the integral over momentum space.
+        # Here we use a simplified form for demonstration purposes.
+        k = np.sqrt(self.mass**2 + (x - y)**2 + t**2)
+        return 1 / (k**2 + self.mass**2)
+
+# Example usage
+mass = 1.0  # Mass of the particle
+feynman = FeynmanPropagator(mass)
+
+# Define position and time
+x = 1.0
+y = 2.0
+t = 0.5
+
+# Calculate the Feynman propagator
+propagator_result = feynman.propagator(x, y, t)
+print("Feynman propagator result:", propagator_result)
