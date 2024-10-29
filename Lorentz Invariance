@@ -1,0 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+
+# Lorentz Transformation function
+def lorentz_transform(x, t, v):
+    gamma = 1 / np.sqrt(1 - (v**2 / c**2))
+    x_prime = gamma * (x - v * t)
+    t_prime = gamma * (t - (v * x) / c**2)
+    return x_prime, t_prime
+
+# Define a quantum field, e.g., a scalar field
+def scalar_field(x, t):
+    return np.sin(2 * np.pi * (x - c * t))
+
+# Create a grid of points in space and time
+x = np.linspace(-10, 10, 400)
+t = np.linspace(0, 2, 100)
+
+# Velocity for Lorentz transformation
+v = 0.8 * c  # 80% the speed of light
+
+# Plotting the scalar field and its Lorentz transformed version
+plt.figure(figsize=(12, 6))
+for time in t:
+    # Original field
+    phi = scalar_field(x, time)
+    plt.subplot(2, 1, 1)
+    plt.plot(x, phi, label=f'Time={time:.2f}s')
+    plt.title('Scalar Field φ(x, t)')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Field Value')
+    plt.ylim(-1.5, 1.5)
+    plt.grid(True)
+    plt.legend(loc='upper right')
+
+    # Lorentz transformed coordinates
+    x_prime, t_prime = lorentz_transform(x, time, v)
+    phi_prime = scalar_field(x_prime, t_prime)
+    
+    plt.subplot(2, 1, 2)
+    plt.plot(x_prime, phi_prime, label=f'Time={time:.2f}s (Transformed)')
+    plt.title('Lorentz Transformed Scalar Field φ(x\', t\')')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Field Value')
+    plt.ylim(-1.5, 1.5)
+    plt.grid(True)
+    plt.legend(loc='upper right')
+
+plt.tight_layout()
+plt.show()
