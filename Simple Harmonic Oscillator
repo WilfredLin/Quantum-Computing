@@ -1,0 +1,35 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0  # Mass of the oscillator in kg
+omega = 1.0  # Angular frequency in rad/s
+
+# Define the wavefunction for a simple harmonic oscillator
+def wavefunction(n, x):
+    normalization = (m * omega / (np.pi * hbar))**0.25
+    hermite_poly = np.polynomial.hermite.hermval(np.sqrt(m * omega / hbar) * x, [0] * n + [1])
+    return normalization * np.exp(-m * omega * x**2 / (2 * hbar)) * hermite_poly
+
+# Energy levels of the simple harmonic oscillator
+def energy_levels(n):
+    return hbar * omega * (n + 0.5)
+
+# Create a grid of points in space
+x = np.linspace(-5, 5, 400)
+
+# Plotting the first three wavefunctions and their energy levels
+plt.figure(figsize=(12, 8))
+for n in range(3):
+    psi = wavefunction(n, x)
+    E = energy_levels(n)
+    plt.plot(x, psi**2, label=f'n={n}, E={E:.2e} J')
+
+plt.title('Wavefunctions of a Simple Harmonic Oscillator')
+plt.xlabel('Position (m)')
+plt.ylabel('Probability Density |ψ(x)|²')
+plt.ylim(-0.1, 0.5)
+plt.legend()
+plt.grid()
+plt.show()
