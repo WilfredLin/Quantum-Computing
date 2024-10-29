@@ -1,0 +1,70 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+
+# Lorentz Transformation function
+def lorentz_transform(x, t, v):
+    gamma = 1 / np.sqrt(1 - (v**2 / c**2))
+    x_prime = gamma * (x - v * t)
+    t_prime = gamma * (t - (v * x) / c**2)
+    return x_prime, t_prime
+
+# Define a quantum field, e.g., a scalar field
+def scalar_field(x, t):
+    return np.sin(2 * np.pi * (x - c * t))
+
+# Energy-Momentum Tensor for a scalar field
+def energy_momentum_tensor(phi, phi_dot):
+    T00 = 0.5 * (phi_dot**2 + (np.gradient(phi, edge_order=2)**2))  # Energy density
+    T0i = phi_dot * np.gradient(phi)  # Momentum density
+    Tij = np.zeros((2, 2))  # For a 1D field, we only consider Txx
+    Tij[0, 0] = T00  # T00
+    Tij[0, 1] = Tij[1, 0] = T0i  # T0i and Ti0
+    Tij[1, 1] = 0.5 * (np.gradient(phi, edge_order=2)**2)  # T11
+    return Tij
+
+# Create a grid of points in space and time
+x = np.linspace(-10, 10, 400)
+t = np.linspace(0, 2, 100)
+
+# Velocity for Lorentz transformation
+v = 0.8 * c  # 80% the speed of light
+
+# Plotting the scalar field and its Energy-Momentum Tensor
+plt.figure(figsize=(12, 6))
+for time in t:
+    # Original field
+    phi = scalar_field(x, time)
+    phi_dot = np.gradient(phi, x)  # Time derivative approximation
+    T = energy_momentum_tensor(phi, phi_dot)
+    
+    plt.subplot(2, 1, 1)
+    plt.plot(x, phi, label=f'Time={time:.2f}s')
+    plt.title('Scalar Field φ(x, t)')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Field Value')
+    plt.ylim(-1.5, 1.5)
+    plt.grid(True)
+    plt.legend(loc='upper right')
+
+    # Lorentz transformed coordinates
+    x_prime, t_prime = lorentz_transform(x, time, v)
+    phi_prime = scalar_field(x_prime, t_prime)
+    phi_dot_prime = np.gradient(phi_prime, x_prime)
+    T_prime = energy_momentum_tensor(phi_prime, phi_dot_prime)
+    
+    plt.subplot(2, 1, 2)
+    plt.plot(x_prime, T[0, 0], label=f'T00 at Time={time:.2f}s (Original)')
+    plt.plot(x_prime, T_prime[0, 0], label=f'T00 at Time={time:.2f}s (Transformed)', linestyle='--')
+    plt.title('Energy-Momentum Tensor T00(x\', t\')')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Energy Density')
+    plt.ylim(-1.5, 1.5)
+    plt.grid(True)
+    plt.legend(loc='upper right')
+
+plt.tight_layout()
+plt.show()
