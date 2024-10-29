@@ -1,0 +1,58 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0e-30  # Mass of the particle in kg
+
+# Define the bosonic creation and annihilation operators
+class BosonicOperator:
+    def __init__(self):
+        self.state = 0  # Initial state with no particles
+
+    def create(self):
+        """Create a particle (apply the creation operator)."""
+        self.state += 1
+
+    def annihilate(self):
+        """Annihilate a particle (apply the annihilation operator)."""
+        if self.state > 0:
+            self.state -= 1
+
+    def number_operator(self):
+        """Return the number of particles in the state."""
+        return self.state
+
+# Define parameters for the multi-particle states
+num_particles = 5  # Total number of bosons
+boson = BosonicOperator()
+
+# Create a Fock space representation
+fock_states = []
+for n in range(num_particles + 1):
+    boson.state = n
+    fock_states.append(boson.number_operator())
+
+# Display the Fock space states
+print("Fock Space States (Number of Particles):", fock_states)
+
+# Define the probability density function for bosonic states
+def bosonic_state_probability(n, x):
+    """Calculate the probability density of a bosonic state."""
+    normalization = 1 / np.sqrt(2 * np.pi * hbar)
+    return normalization * np.exp(-x**2 / (2 * hbar)) * (x**n) / np.math.factorial(n)
+
+# Position values for plotting
+x_values = np.linspace(-1e-6, 1e-6, 100)
+
+# Plotting the probability densities for different bosonic states
+plt.figure(figsize=(12, 8))
+for n in range(num_particles + 1):
+    plt.plot(x_values, bosonic_state_probability(n, x_values), label=f'n={n}')
+
+plt.title('Bosonic States Probability Densities in Fock Space')
+plt.xlabel('Position x (m)')
+plt.ylabel('Probability Density |Ψ_n(x)|²')
+plt.legend()
+plt.grid()
+plt.show()
