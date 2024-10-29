@@ -1,0 +1,37 @@
+import numpy as np
+
+def lorentz_transform(matrix, vector):
+    """Apply a Lorentz transformation to a 4-vector."""
+    return np.dot(matrix, vector)
+
+def lorentz_invariant_measure(momentum_vector):
+    """Calculate the Lorentz invariant measure for a given momentum vector."""
+    # The Lorentz invariant measure is given by the volume element d^4p = dE d^3p
+    # For a 4-momentum vector p = (E, px, py, pz)
+    # The invariant measure is d^4p = (1/(2π)^3) * dE * d^3p
+    # Here we will return the measure as a product of differentials
+    E = momentum_vector[0]
+    p3_magnitude = np.linalg.norm(momentum_vector[1:])  # Magnitude of spatial momentum
+    measure = (1 / (2 * np.pi)**3) * E * p3_magnitude
+    return measure
+
+# Example: Define a Lorentz transformation matrix for a boost in the x-direction
+beta = 0.5  # Velocity as a fraction of the speed of light
+gamma = 1 / np.sqrt(1 - beta**2)
+lorentz_matrix = np.array([[gamma, -gamma * beta, 0, 0],
+                            [-gamma * beta, gamma, 0, 0],
+                            [0, 0, 1, 0],
+                            [0, 0, 0, 1]])
+
+# Example momentum vector p = (E, px, py, pz)
+momentum_vector = np.array([1.0, 0.5, 0.5, 0.5])  # Example 4-momentum
+
+# Apply Lorentz transformation
+transformed_momentum = lorentz_transform(lorentz_matrix, momentum_vector)
+
+# Calculate Lorentz invariant measure
+invariant_measure = lorentz_invariant_measure(transformed_momentum)
+
+print("Transformed Momentum Vector:")
+print(transformed_momentum)
+print("Lorentz Invariant Measure:", invariant_measure)
