@@ -1,0 +1,45 @@
+import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+class SchrodingerWavefunction:
+    def __init__(self, potential_function):
+        self.potential_function = potential_function
+
+    def equation(self, t, y):
+        """The time-dependent Schrödinger equation."""
+        psi = y[0]
+        phi = y[1]
+        dpsi_dt = -1j * phi
+        dphi_dt = -1j * self.potential_function(t) * psi
+        return [dpsi_dt, dphi_dt]
+
+    def solve(self, t_span, y0, t_eval):
+        """Solve the time-dependent Schrödinger equation."""
+        solution = solve_ivp(self.equation, t_span, y0, t_eval=t_eval)
+        return solution.t, solution.y
+
+# Example potential function
+def potential_function(t):
+    return 0.5 * t**2  # Example harmonic oscillator potential
+
+# Parameters
+initial_conditions = [1.0, 0.0]  # Initial conditions: [psi(0), phi(0)]
+t_span = (0, 10)  # Time span for the solution
+t_eval = np.linspace(0, 10, 100)  # Points to evaluate the solution
+
+# Create an instance of the solver
+schrodinger_solver = SchrodingerWavefunction(potential_function)
+
+# Solve the equation
+t, psi_phi = schrodinger_solver.solve(t_span, initial_conditions, t_eval)
+
+# Plot the results
+plt.figure(figsize=(10, 5))
+plt.plot(t, np.abs(psi_phi[0])**2, label='|psi(t)|^2', color='blue')
+plt.title('Schrödinger Wavefunction Probability Density')
+plt.xlabel('Time (t)')
+plt.ylabel('Probability Density')
+plt.legend()
+plt.grid()
+plt.show()
