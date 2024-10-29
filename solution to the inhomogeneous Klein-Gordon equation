@@ -1,0 +1,38 @@
+import numpy as np
+from scipy.integrate import solve_ivp
+
+class InhomogeneousKleinGordon:
+    def __init__(self, mass, source_function):
+        self.mass = mass
+        self.source_function = source_function
+
+    def equation(self, t, y):
+        """The differential equation for the inhomogeneous Klein-Gordon equation."""
+        phi, phi_dot = y
+        phi_double_dot = self.source_function(t) - self.mass**2 * phi
+        return [phi_dot, phi_double_dot]
+
+    def solve(self, t_span, y0, t_eval):
+        """Solve the inhomogeneous Klein-Gordon equation."""
+        solution = solve_ivp(self.equation, t_span, y0, t_eval=t_eval)
+        return solution.t, solution.y
+
+# Example source function
+def source_function(t):
+    return np.sin(t)  # Example source term
+
+# Parameters
+mass = 1.0  # Mass of the scalar field
+initial_conditions = [0.0, 0.0]  # Initial conditions: [phi(0), phi'(0)]
+t_span = (0, 10)  # Time span for the solution
+t_eval = np.linspace(0, 10, 100)  # Points to evaluate the solution
+
+# Create an instance of the solver
+kg_solver = InhomogeneousKleinGordon(mass, source_function)
+
+# Solve the equation
+t, phi = kg_solver.solve(t_span, initial_conditions, t_eval)
+
+# Print the results
+for time, value in zip(t, phi[0]):
+    print(f"t = {time:.2f}, phi(t) = {value:.4f}")
