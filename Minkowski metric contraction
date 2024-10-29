@@ -1,0 +1,26 @@
+import numpy as np
+
+class MinkowskiMetric:
+    def __init__(self):
+        # Define the Minkowski metric tensor (in 4D)
+        self.metric_tensor = np.array([[1, 0, 0, 0],
+                                        [0, -1, 0, 0],
+                                        [0, 0, -1, 0],
+                                        [0, 0, 0, -1]])
+
+    def contract(self, vector1, vector2):
+        """Contract two vectors using the Minkowski metric."""
+        if len(vector1) != 4 or len(vector2) != 4:
+            raise ValueError("Both vectors must be 4-dimensional.")
+        return np.dot(vector1, np.dot(self.metric_tensor, vector2))
+
+# Example usage
+minkowski = MinkowskiMetric()
+
+# Define two 4-vectors
+vector_a = np.array([1, 2, 3, 4])
+vector_b = np.array([4, 3, 2, 1])
+
+# Calculate the contraction
+contraction_result = minkowski.contract(vector_a, vector_b)
+print("Contraction result:", contraction_result)
