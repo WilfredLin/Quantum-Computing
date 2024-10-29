@@ -1,0 +1,59 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class QuantumParticle:
+    def __init__(self, mass, grid_size, time_steps, dt, potential):
+        self.mass = mass  # mass of the particle
+        self.grid_size = grid_size  # size of the spatial grid
+        self.time_steps = time_steps  # number of time steps
+        self.dt = dt  # time step size
+        self.potential = potential  # potential energy function
+        self.psi = np.zeros(grid_size, dtype=np.complex_)  # wave function initialized to zero
+        self.x = np.linspace(-10, 10, grid_size)  # spatial grid
+
+    def initialize_wave_function(self, wave_packet_center, wave_packet_width):
+        """Initialize the wave function as a Gaussian wave packet."""
+        self.psi = (1 / (wave_packet_width * np.sqrt(np.pi))) * np.exp(-0.5 * ((self.x - wave_packet_center) / wave_packet_width) ** 2)
+
+    def time_evolution(self):
+        """Evolve the wave function in time using the split operator method."""
+        for _ in range(self.time_steps):
+            # Kinetic energy operator (momentum operator)
+            kinetic_operator = np.exp(-1j * self.dt * (-np.pi**2 * np.fft.fftfreq(self.grid_size, d=(self.x[1] - self.x[0])**2) ** 2) / (2 * self.mass))
+            potential_operator = np.exp(-1j * self.dt * self.potential(self.x))
+            
+            # Apply the kinetic operator in Fourier space
+            self.psi = np.fft.ifft(kinetic_operator * np.fft.fft(self.psi))
+            # Apply the potential operator in position space
+            self.psi *= potential_operator
+
+    def plot_wave_function(self, title):
+        """Plot the wave function."""
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.x, np.abs(self.psi)**2, label='Probability Density')
+        plt.title(title)
+        plt.xlabel('Position')
+        plt.ylabel('Probability Density')
+        plt.grid()
+        plt.legend()
+        plt.show()
+
+# Example potential energy function (harmonic oscillator)
+def harmonic_potential(x):
+    return 0.5 * x**2
+
+# Create a quantum particle
+mass = 1.0  # mass of the particle
+grid_size = 512  # size of the spatial grid
+time_steps = 100  # number of time steps
+dt = 0.01  # time step size
+quantum_particle = QuantumParticle(mass, grid_size, time_steps, dt, harmonic_potential)
+
+# Initialize the wave function
+quantum_particle.initialize_wave_function(wave_packet_center=0, wave_packet_width=1)
+
+# Evolve the wave function in time
+quantum_particle.time_evolution()
+
+# Plot the wave function
+quantum_particle.plot_wave_function('Wave Function Evolution after Time Evolution')
