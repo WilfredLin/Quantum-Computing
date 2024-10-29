@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0  # Mass of the scalar field in kg
+L = 10.0  # Length of the box in m
+N = 100  # Number of spatial points
+
+# Define the scalar field
+def scalar_field(x, t):
+    # Simple harmonic solution for a free scalar field
+    k = np.pi * np.arange(1, N + 1) / L  # Wave numbers
+    omega = np.sqrt(m**2 + k**2)  # Dispersion relation
+    phi = np.sum(np.sin(k[:, None] * x) * np.cos(omega[:, None] * t), axis=0)
+    return phi
+
+# Define the Hamiltonian for the scalar field
+def hamiltonian(phi, pi):
+    # Kinetic and potential energy terms
+    kinetic_energy = 0.5 * np.sum(pi**2)
+    potential_energy = 0.5 * m**2 * np.sum(phi**2)
+    return kinetic_energy + potential_energy
+
+# Create a grid of points in space and time
+x = np.linspace(0, L, 400)
+t = np.linspace(0, 10, 200)
+
+# Initialize field and momentum
+phi = scalar_field(x, 0)
+pi = np.gradient(phi, x)  # Approximate momentum as the spatial gradient of the field
+
+# Calculate the Hamiltonian
+H = hamiltonian(phi, pi)
+print(f'Hamiltonian H = {H}')
+
+# Plotting the scalar field at different times
+plt.figure(figsize=(12, 8))
+for time in [0, 2, 4, 6, 8]:
+    phi = scalar_field(x, time)
+    plt.plot(x, phi, label=f't={time} s')
+
+plt.title('Free Scalar Field in Quantum Field Theory')
+plt.xlabel('Position (m)')
+plt.ylabel('Field Value φ(x, t)')
+plt.legend()
+plt.grid()
+plt.ylim(-2, 2)
+plt.show()
