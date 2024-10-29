@@ -1,0 +1,44 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+epsilon_0 = 8.854e-12  # Permittivity of free space in F/m
+mu_0 = 4 * np.pi * 1e-7  # Permeability of free space in H/m
+
+# Define the electric field E and magnetic field B as functions of time and space
+def electric_field(x, t):
+    return np.sin(2 * np.pi * (x - c * t))
+
+def magnetic_field(x, t):
+    return np.sin(2 * np.pi * (x - c * t))
+
+# Create a grid of points in space and time
+x = np.linspace(0, 10, 100)
+T = np.linspace(0, 2, 100)
+
+# Plotting the fields over time
+plt.figure(figsize=(12, 6))
+for t in T:
+    E = electric_field(x, t)
+    B = magnetic_field(x, t)
+    plt.subplot(2, 1, 1)
+    plt.plot(x, E, label=f'Time={t:.2f}s')
+    plt.title('Electric Field E(x, t)')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Electric Field (V/m)')
+    plt.ylim(-1.5, 1.5)
+    plt.grid(True)
+    plt.legend(loc='upper right')
+
+    plt.subplot(2, 1, 2)
+    plt.plot(x, B, label=f'Time={t:.2f}s')
+    plt.title('Magnetic Field B(x, t)')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Magnetic Field (T)')
+    plt.ylim(-1.5, 1.5)
+    plt.grid(True)
+    plt.legend(loc='upper right')
+
+plt.tight_layout()
+plt.show()
