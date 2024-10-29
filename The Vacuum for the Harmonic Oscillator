@@ -1,0 +1,44 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0  # Mass of the harmonic oscillator in kg
+L = 10.0  # Length of the box in m
+N = 100  # Number of spatial points
+
+# Define the vacuum state for the harmonic oscillator
+def vacuum_state(x):
+    # Ground state wave function of the harmonic oscillator
+    omega = np.sqrt(m)  # Angular frequency
+    normalization = (m * omega / (np.pi * hbar))**0.5
+    psi_0 = normalization * np.exp(-0.5 * m * omega * x**2 / hbar)
+    return psi_0
+
+# Define the Hamiltonian for the harmonic oscillator
+def hamiltonian(psi, x):
+    # Kinetic and potential energy terms
+    kinetic_energy = -0.5 * hbar**2 * np.gradient(np.gradient(psi, x), x)
+    potential_energy = 0.5 * m * (x**2) * psi
+    return np.sum(kinetic_energy + potential_energy)
+
+# Create a grid of points in space
+x = np.linspace(-5, 5, 400)
+
+# Calculate the vacuum state
+psi_0 = vacuum_state(x)
+
+# Calculate the Hamiltonian
+H = hamiltonian(psi_0, x)
+print(f'Hamiltonian H = {H}')
+
+# Plotting the vacuum state
+plt.figure(figsize=(12, 8))
+plt.plot(x, psi_0, label='Vacuum State ψ(x)')
+plt.title('Vacuum State of the Harmonic Oscillator')
+plt.xlabel('Position (m)')
+plt.ylabel('Wave Function ψ(x)')
+plt.legend()
+plt.grid()
+plt.ylim(-0.1, 0.5)
+plt.show()
