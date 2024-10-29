@@ -1,0 +1,38 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0e-30  # Mass of the particle in kg
+
+# Lorentz transformation for a boost in the x-direction
+def lorentz_transform(v):
+    """Calculate the Lorentz transformation matrix for a boost in the x-direction."""
+    gamma = 1 / np.sqrt(1 - (v/c)**2)
+    return np.array([[gamma, -gamma * v / c, 0, 0],
+                     [-gamma * v / c, gamma, 0, 0],
+                     [0, 0, 1, 0],
+                     [0, 0, 0, 1]])
+
+# Calculate invariant mass from energy and momentum
+def invariant_mass(E, p):
+    """Calculate the invariant mass using the energy and momentum."""
+    return np.sqrt(E**2 - (p * c)**2)
+
+# Define parameters for various states
+momenta = np.linspace(0, 1e-22, 100)  # Momentum values in kg*m/s
+energies = np.sqrt((momenta * c)**2 + (m * c**2)**2)  # Energy values using E^2 = p^2*c^2 + m^2*c^4
+
+# Calculate invariant masses
+invariant_masses = [invariant_mass(E, p) for E, p in zip(energies, momenta)]
+
+# Plotting the invariant masses
+plt.figure(figsize=(12, 8))
+plt.plot(momenta, invariant_masses, label='Invariant Mass', color='red')
+plt.title('Invariant Mass vs Momentum')
+plt.xlabel('Momentum p (kg*m/s)')
+plt.ylabel('Invariant Mass (kg)')
+plt.legend()
+plt.grid()
+plt.show()
