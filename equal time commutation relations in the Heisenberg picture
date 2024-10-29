@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class QuantumField:
+    def __init__(self, field_name):
+        self.field_name = field_name  # Name of the field
+        self.operators = {}  # Dictionary to hold field operators
+
+    def create_operator(self, mode):
+        """Create a field operator for a given mode."""
+        self.operators[mode] = f"{self.field_name}_{mode}"
+
+    def equal_time_commutation_relation(self, mode1, mode2):
+        """Calculate the equal time commutation relation between two field operators."""
+        if mode1 in self.operators and mode2 in self.operators:
+            return f"[{self.operators[mode1]}, {self.operators[mode2]}] = i * delta({mode1}, {mode2})"
+        else:
+            return "One or both operators not defined."
+
+    def display_operators(self):
+        """Display all created operators."""
+        return self.operators
+
+# Example usage
+phi = QuantumField("phi")
+
+# Create field operators for different modes
+phi.create_operator("k1")
+phi.create_operator("k2")
+
+# Display operators
+print(phi.display_operators())
+
+# Calculate equal time commutation relation
+commutation_relation = phi.equal_time_commutation_relation("k1", "k2")
+print(commutation_relation)
+
+# For the same mode
+commutation_relation_same_mode = phi.equal_time_commutation_relation("k1", "k1")
+print(commutation_relation_same_mode)
