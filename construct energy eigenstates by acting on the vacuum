@@ -1,0 +1,51 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+c = 3.0e8  # Speed of light in m/s
+epsilon_0 = 8.854e-12  # Vacuum permittivity in F/m
+
+# Define the Casimir energy between two plates
+def casimir_energy(distance, area):
+    return - (hbar * c * np.pi**2) / (720 * distance**3) * area
+
+# Define parameters
+distance_values = np.linspace(1e-9, 1e-6, 100)  # Distance between plates in meters
+area = 1e-4  # Area of the plates in m²
+
+# Calculate Casimir energy for these distances
+energy_values = casimir_energy(distance_values, area)
+
+# Plotting the results
+plt.figure(figsize=(12, 8))
+plt.plot(distance_values, energy_values, label='Casimir Energy E(d)')
+plt.title('Casimir Effect in Quantum Field Theory')
+plt.xlabel('Distance between plates d (m)')
+plt.ylabel('Casimir Energy E (J)')
+plt.axhline(0, color='black', lw=0.5, ls='--')
+plt.legend()
+plt.grid()
+plt.show()
+
+# Constructing energy eigenstates by acting on the vacuum
+def energy_eigenstate(n, x):
+    """Construct the nth energy eigenstate in a 1D infinite potential well."""
+    L = 1.0  # Length of the well
+    normalization = np.sqrt(2 / L)
+    return normalization * np.sin(n * np.pi * x / L)
+
+# Define parameters for eigenstates
+x_values = np.linspace(0, 1, 100)  # Position in the well
+n_values = [1, 2, 3]  # First three eigenstates
+
+# Plotting the energy eigenstates
+plt.figure(figsize=(12, 8))
+for n in n_values:
+    plt.plot(x_values, energy_eigenstate(n, x_values), label=f'n={n}')
+plt.title('Energy Eigenstates in a 1D Infinite Potential Well')
+plt.xlabel('Position x (m)')
+plt.ylabel('Eigenstate Ψ_n(x)')
+plt.legend()
+plt.grid()
+plt.show()
