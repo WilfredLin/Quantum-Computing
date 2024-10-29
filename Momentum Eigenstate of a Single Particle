@@ -1,0 +1,27 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+m = 1.0e-30  # Mass of the particle in kg
+
+# Define the momentum eigenstate function
+def momentum_eigenstate(p, x):
+    """Construct the momentum eigenstate for a single particle."""
+    normalization = 1 / np.sqrt(2 * np.pi * hbar)
+    return normalization * np.exp(1j * p * x / hbar)
+
+# Define parameters for momentum eigenstates
+x_values = np.linspace(-1e-6, 1e-6, 100)  # Position in meters
+p_values = [1e-24, 2e-24, 3e-24]  # Different momentum values in kg*m/s
+
+# Plotting the momentum eigenstates
+plt.figure(figsize=(12, 8))
+for p in p_values:
+    plt.plot(x_values, np.abs(momentum_eigenstate(p, x_values))**2, label=f'p={p:.1e} kg*m/s')
+plt.title('Momentum Eigenstates of a Single Particle')
+plt.xlabel('Position x (m)')
+plt.ylabel('Probability Density |Ψ_p(x)|²')
+plt.legend()
+plt.grid()
+plt.show()
