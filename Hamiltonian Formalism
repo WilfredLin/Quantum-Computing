@@ -1,0 +1,61 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 3e8  # Speed of light in m/s
+hbar = 1.055e-34  # Reduced Planck's constant in J*s
+
+# Define a simple scalar field theory with a potential
+def scalar_field(x, t):
+    return np.sin(2 * np.pi * (x - c * t))
+
+# Non-Abelian Internal Symmetry transformation
+def non_abelian_symmetry_transform(phi, U):
+    return U @ phi  # U is a matrix representing the symmetry transformation
+
+# Energy-Momentum Tensor for a scalar field
+def energy_momentum_tensor(phi, phi_dot):
+    T00 = 0.5 * (phi_dot**2 + (np.gradient(phi, edge_order=2)**2))  # Energy density
+    T0i = phi_dot * np.gradient(phi)  # Momentum density
+    Tij = np.zeros((2, 2))  # For a 1D field, we only consider Txx
+    Tij[0, 0] = T00  # T00
+    Tij[0, 1] = Tij[1, 0] = T0i  # T0i and Ti0
+    Tij[1, 1] = 0.5 * (np.gradient(phi, edge_order=2)**2)  # T11
+    return Tij
+
+# Hamiltonian for the scalar field
+def hamiltonian(phi, phi_dot):
+    return np.trapz(0.5 * (phi_dot**2 + (np.gradient(phi, edge_order=2)**2)), dx=0.05)
+
+# Create a grid of points in space and time
+x = np.linspace(-10, 10, 400)
+t = np.linspace(0, 2, 100)
+
+# Non-Abelian symmetry transformation matrix (example: SU(2))
+U = np.array([[np.cos(np.pi/4), -np.sin(np.pi/4)],
+              [np.sin(np.pi/4), np.cos(np.pi/4)]])
+
+# Plotting the scalar field and its Energy-Momentum Tensor
+plt.figure(figsize=(12, 6))
+for time in t:
+    # Original field
+    phi = scalar_field(x, time)
+    phi_dot = np.gradient(phi, x)  # Time derivative approximation
+    T = energy_momentum_tensor(phi, phi_dot)
+    
+    plt.subplot(2, 1, 1)
+    plt.plot(x, phi, label=f'Time={time:.2f}s')
+    plt.title('Scalar Field φ(x, t)')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Field Value')
+    plt.ylim(-1.5, 1.5)
+    plt.legend()
+
+    plt.subplot(2, 1, 2)
+    plt.imshow(T, extent=[-10, 10, -10, 10], origin='lower', aspect='auto')
+    plt.colorbar(label='Energy-Momentum Tensor')
+    plt.title('Energy-Momentum Tensor Tμν')
+    plt.xlabel('Position (m)')
+    plt.ylabel('Position (m)')
+
+plt
