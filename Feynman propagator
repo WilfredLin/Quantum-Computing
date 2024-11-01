@@ -1,0 +1,25 @@
+import numpy as np
+
+class FeynmanPropagator:
+    def __init__(self, mass):
+        self.mass = mass
+
+    def propagator(self, x1, x2):
+        # Calculate the Feynman propagator for a scalar field
+        # in position space using the formula
+        # D_F(x1, x2) = ∫ d^4p / (2π)^4 (e^{-ip(x1 - x2)} / (p^2 - m^2 + iε))
+        p = np.linspace(-10, 10, 100)  # momentum space range
+        integrand = np.exp(-1j * (p[None, :] @ (x1 - x2).T)) / (p**2 - self.mass**2 + 1j * 1e-10)
+        return np.trapz(integrand, p, axis=1)
+
+    def display_propagator(self, x1, x2):
+        result = self.propagator(x1, x2)
+        print(f"Feynman Propagator D_F({x1}, {x2}) = {result}")
+
+# Example usage:
+if __name__ == '__main__':
+    mass = 1.0  # Example mass
+    feynman = FeynmanPropagator(mass)
+    x1 = np.array([0, 0, 0, 0])  # Example spacetime point 1
+    x2 = np.array([1, 0, 0, 0])  # Example spacetime point 2
+    feynman.display_propagator(x1, x2)
