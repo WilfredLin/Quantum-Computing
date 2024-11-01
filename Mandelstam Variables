@@ -1,0 +1,42 @@
+import numpy as np
+
+class MandelstamVariables:
+    def __init__(self, energy, momentum1, momentum2):
+        self.energy = energy
+        self.momentum1 = np.array(momentum1)
+        self.momentum2 = np.array(momentum2)
+
+    def s_variable(self):
+        # Mandelstam s = (p1 + p2)^2
+        p1 = np.array([self.energy, *self.momentum1])
+        p2 = np.array([self.energy, *self.momentum2])
+        s = np.dot(p1 + p2, p1 + p2)
+        return s
+
+    def t_variable(self):
+        # Mandelstam t = (p1 - p3)^2, assuming p3 is the final state momentum
+        p3 = np.array([self.energy, *self.momentum1])  # Placeholder for final state momentum
+        t = np.dot(self.momentum1 - p3[1:], self.momentum1 - p3[1:])
+        return t
+
+    def u_variable(self):
+        # Mandelstam u = (p1 - p4)^2, assuming p4 is another final state momentum
+        p4 = np.array([self.energy, *self.momentum2])  # Placeholder for another final state momentum
+        u = np.dot(self.momentum1 - p4[1:], self.momentum1 - p4[1:])
+        return u
+
+    def display_variables(self):
+        s = self.s_variable()
+        t = self.t_variable()
+        u = self.u_variable()
+        print(f"Mandelstam s: {s}")
+        print(f"Mandelstam t: {t}")
+        print(f"Mandelstam u: {u}")
+
+# Example usage:
+if __name__ == '__main__':
+    energy = 10.0  # Example energy in GeV
+    momentum1 = [1.0, 0.0, 0.0]  # Example momentum vector for particle 1
+    momentum2 = [1.0, 0.0, 0.0]  # Example momentum vector for particle 2
+    mandelstam = MandelstamVariables(energy, momentum1, momentum2)
+    mandelstam.display_variables()
