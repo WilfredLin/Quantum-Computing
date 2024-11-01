@@ -1,0 +1,48 @@
+import numpy as np
+
+class DiracEquation:
+    def __init__(self, mass, momentum):
+        self.mass = mass
+        self.momentum = np.array(momentum)
+
+    def gamma_matrices(self):
+        # Define the gamma matrices in the Dirac representation
+        gamma0 = np.array([[1, 0, 0, 0],
+                           [0, 1, 0, 0],
+                           [0, 0, -1, 0],
+                           [0, 0, 0, -1]])
+        
+        gamma1 = np.array([[0, 0, 0, 1],
+                           [0, 0, 1, 0],
+                           [0, 1, 0, 0],
+                           [1, 0, 0, 0]])
+        
+        gamma2 = np.array([[0, 0, 0, -1j],
+                           [0, 0, 1j, 0],
+                           [0, -1j, 0, 0],
+                           [1j, 0, 0, 0]])
+        
+        gamma3 = np.array([[0, 1, 0, 0],
+                           [1, 0, 0, 0],
+                           [0, 0, 0, -1],
+                           [0, 0, -1, 0]])
+        
+        return gamma0, gamma1, gamma2, gamma3
+
+    def dirac_operator(self):
+        gamma0, gamma1, gamma2, gamma3 = self.gamma_matrices()
+        p = np.array([self.mass, *self.momentum])
+        dirac_op = gamma0 * p[0] + gamma1 * p[1] + gamma2 * p[2] + gamma3 * p[3]
+        return dirac_op
+
+    def display_equation(self):
+        dirac_op = self.dirac_operator()
+        print("Dirac Operator:")
+        print(dirac_op)
+
+# Example usage:
+if __name__ == '__main__':
+    mass = 0.511  # Mass of the electron in MeV
+    momentum = [0.1, 0.2, 0.3]  # Example momentum vector
+    dirac_eq = DiracEquation(mass, momentum)
+    dirac_eq.display_equation()
