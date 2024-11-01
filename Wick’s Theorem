@@ -1,0 +1,27 @@
+import numpy as np
+import itertools
+
+class WickTheorem:
+    def __init__(self, operators):
+        self.operators = operators
+
+    def contraction(self, op1, op2):
+        # Placeholder for the actual contraction logic
+        return f"<{op1} {op2}>"
+
+    def wick_expansion(self):
+        contractions = []
+        for op1, op2 in itertools.combinations(self.operators, 2):
+            contractions.append(self.contraction(op1, op2))
+        return contractions
+
+    def display_expansion(self):
+        expansion = self.wick_expansion()
+        for term in expansion:
+            print(term)
+
+# Example usage:
+if __name__ == '__main__':
+    operators = ['phi1', 'phi2', 'phi3']  # Example field operators
+    wick = WickTheorem(operators)
+    wick.display_expansion()
