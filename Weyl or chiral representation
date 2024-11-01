@@ -1,0 +1,34 @@
+import numpy as np
+
+class WeylRepresentation:
+    def __init__(self):
+        self.gamma_matrices = self.generate_gamma_matrices()
+
+    def generate_gamma_matrices(self):
+        # Generate the gamma matrices for the Weyl (chiral) representation
+        gamma_0 = np.array([[0, 1], [1, 0]])
+        gamma_1 = np.array([[0, 0], [1, 0]])
+        gamma_2 = np.array([[0, 0], [0, 1]])
+        gamma_3 = np.array([[1, 0], [0, -1]])
+        
+        return [gamma_0, gamma_1, gamma_2, gamma_3]
+
+    def anticommutator(self, i, j):
+        # Calculate the anticommutator of two gamma matrices
+        return np.dot(self.gamma_matrices[i], self.gamma_matrices[j]) + np.dot(self.gamma_matrices[j], self.gamma_matrices[i])
+
+    def display_gamma_matrices(self):
+        # Display the gamma matrices
+        for i, gamma in enumerate(self.gamma_matrices):
+            print(f"Gamma matrix {i}:\n{gamma}\n")
+
+# Example usage:
+if __name__ == '__main__':
+    weyl = WeylRepresentation()
+    
+    # Display the gamma matrices
+    weyl.display_gamma_matrices()
+    
+    # Calculate and display the anticommutator of gamma_0 and gamma_1
+    anticommutator_result = weyl.anticommutator(0, 1)
+    print("Anticommutator of gamma_0 and gamma_1:\n", anticommutator_result)
