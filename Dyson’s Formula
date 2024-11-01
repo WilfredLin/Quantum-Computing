@@ -1,0 +1,23 @@
+import numpy as np
+
+class DysonFormula:
+    def __init__(self, hamiltonian, time):
+        self.hamiltonian = hamiltonian
+        self.time = time
+
+    def time_evolution_operator(self):
+        return np.exp(-1j * self.hamiltonian * self.time)
+
+    def calculate_amplitude(self, initial_state, final_state):
+        U = self.time_evolution_operator()
+        return np.dot(final_state, np.dot(U, initial_state))
+
+# Example usage:
+if __name__ == '__main__':
+    hamiltonian = np.array([[0, 1], [1, 0]])  # Example Hamiltonian
+    time = 1.0  # Time evolution
+    dyson = DysonFormula(hamiltonian, time)
+    initial_state = np.array([1, 0])  # Initial state vector
+    final_state = np.array([0, 1])  # Final state vector
+    amplitude = dyson.calculate_amplitude(initial_state, final_state)
+    print('Transition Amplitude:', amplitude)
