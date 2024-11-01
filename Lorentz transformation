@@ -1,0 +1,30 @@
+import numpy as np
+
+class LorentzTransformation:
+    def __init__(self, beta):
+        self.beta = beta  # Velocity as a fraction of the speed of light (v/c)
+        self.gamma = 1 / np.sqrt(1 - self.beta**2)  # Lorentz factor
+
+    def boost_matrix(self):
+        # Create the Lorentz boost matrix for a boost in the x-direction
+        return np.array([[self.gamma, -self.gamma * self.beta, 0, 0],
+                         [-self.gamma * self.beta, self.gamma, 0, 0],
+                         [0, 0, 1, 0],
+                         [0, 0, 0, 1]])
+
+    def transform(self, four_vector):
+        # Apply the Lorentz transformation to a four-vector
+        boost = self.boost_matrix()
+        return np.dot(boost, four_vector)
+
+# Example usage:
+if __name__ == '__main__':
+    beta = 0.5  # Example velocity as a fraction of the speed of light
+    lorentz = LorentzTransformation(beta)
+    
+    # Example four-vector (energy, momentum_x, momentum_y, momentum_z)
+    four_vector = np.array([1.0, 0.5, 0.0, 0.0])  # Example four-momentum
+    transformed_vector = lorentz.transform(four_vector)
+    
+    print("Original four-vector:", four_vector)
+    print("Transformed four-vector:", transformed_vector)
