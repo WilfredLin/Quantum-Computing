@@ -1,0 +1,37 @@
+import numpy as np
+
+class NoetherTheorem:
+    def __init__(self, lagrangian, symmetries):
+        self.lagrangian = lagrangian
+        self.symmetries = symmetries
+        self.conserved_quantities = self.compute_conserved_quantities()
+
+    def compute_conserved_quantities(self):
+        conserved_quantities = {}
+        for symmetry in self.symmetries:
+            conserved_quantity = self.calculate_conserved_quantity(symmetry)
+            conserved_quantities[symmetry] = conserved_quantity
+        return conserved_quantities
+
+    def calculate_conserved_quantity(self, symmetry):
+        # Placeholder for actual computation based on the symmetry
+        # In a real implementation, this would involve calculus of variations
+        # and the specific form of the Lagrangian.
+        return f"Conserved quantity associated with {symmetry}"
+
+    def display_conserved_quantities(self):
+        print("Conserved Quantities from Noether's Theorem:")
+        for symmetry, quantity in self.conserved_quantities.items():
+            print(f"Symmetry: {symmetry}, Conserved Quantity: {quantity}")
+
+# Example usage:
+if __name__ == '__main__':
+    # Define a simple Lagrangian and symmetries
+    lagrangian = "L = 1/2 m v^2 - V(x)"  # Example Lagrangian
+    symmetries = ['time translation', 'spatial translation', 'rotational symmetry']
+    
+    # Create an instance of NoetherTheorem
+    noether = NoetherTheorem(lagrangian, symmetries)
+    
+    # Display the conserved quantities
+    noether.display_conserved_quantities()
