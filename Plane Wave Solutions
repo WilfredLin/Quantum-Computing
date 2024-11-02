@@ -1,0 +1,34 @@
+import numpy as np
+
+class PlaneWave:
+    def __init__(self, wave_vector, frequency, amplitude=1.0):
+        self.wave_vector = np.array(wave_vector)
+        self.frequency = frequency
+        self.amplitude = amplitude
+
+    def wave_function(self, position, time):
+        # Calculate the plane wave function at a given position and time
+        k_dot_x = np.dot(self.wave_vector, position)
+        return self.amplitude * np.exp(1j * (k_dot_x - self.frequency * time))
+
+    def display(self):
+        print("Plane Wave Properties:")
+        print("Wave Vector:", self.wave_vector)
+        print("Frequency:", self.frequency)
+        print("Amplitude:", self.amplitude)
+
+# Example usage:
+if __name__ == '__main__':
+    # Define a plane wave with a specific wave vector and frequency
+    wave_vector = [1, 0, 0]  # Example wave vector in 3D
+    frequency = 2.0  # Example frequency
+    plane_wave = PlaneWave(wave_vector, frequency)
+    
+    # Display the properties of the plane wave
+    plane_wave.display()
+    
+    # Calculate and display the wave function at a specific position and time
+    position = [0, 0, 0]  # Example position
+    time = 0  # Example time
+    wave_value = plane_wave.wave_function(position, time)
+    print("Wave Function at position", position, "and time", time, ":\n", wave_value)
