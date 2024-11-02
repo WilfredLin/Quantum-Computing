@@ -1,0 +1,36 @@
+import numpy as np
+
+class DiracSpinor:
+    def __init__(self, components):
+        self.components = np.array(components)
+
+    def charge_conjugate(self):
+        # Charge conjugate of a Dirac spinor
+        # For a Dirac spinor ψ, the charge conjugate is defined as ψ^c = C * ψ*
+        # where C is the charge conjugation matrix and ψ* is the complex conjugate of ψ
+        C = self.charge_conjugation_matrix()
+        conjugate = np.conjugate(self.components)
+        return np.dot(C, conjugate)
+
+    def charge_conjugation_matrix(self):
+        # Define the charge conjugation matrix for 4-component Dirac spinor
+        # This is a simplified version; in practice, it may depend on the representation
+        return np.array([[0, 0, 0, -1],
+                         [0, 0, 1, 0],
+                         [0, -1, 0, 0],
+                         [1, 0, 0, 0]])
+
+    def display(self):
+        print("Dirac Spinor Components:\n", self.components)
+
+# Example usage:
+if __name__ == '__main__':
+    # Define a Dirac spinor with 4 components
+    dirac_spinor = DiracSpinor([1, 2, 3, 4])
+    
+    # Display the original Dirac spinor
+    dirac_spinor.display()
+    
+    # Calculate and display the charge conjugate
+    charge_conjugate_spinor = dirac_spinor.charge_conjugate()
+    print("Charge Conjugate of the Dirac Spinor:\n", charge_conjugate_spinor)
