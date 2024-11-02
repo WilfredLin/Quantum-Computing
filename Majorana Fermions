@@ -1,0 +1,49 @@
+import numpy as np
+
+class MajoranaFermions:
+    def __init__(self, mass):
+        self.mass = mass
+        self.gamma_matrices = self.initialize_gamma_matrices()
+
+    def initialize_gamma_matrices(self):
+        # Initialize the gamma matrices for 4D spacetime
+        gamma_0 = np.array([[0, 1], [1, 0]])  # Gamma^0
+        gamma_1 = np.array([[0, 0], [1, 0]])  # Gamma^1
+        gamma_2 = np.array([[0, 0], [0, 1]])  # Gamma^2
+        gamma_3 = np.array([[1, 0], [0, -1]])  # Gamma^3
+        return {'gamma_0': gamma_0, 'gamma_1': gamma_1, 'gamma_2': gamma_2, 'gamma_3': gamma_3}
+
+    def display_gamma_matrices(self):
+        # Display the gamma matrices
+        for name, matrix in self.gamma_matrices.items():
+            print(f"{name}:\n{matrix}\n")
+
+    def mass_term(self):
+        # Calculate the mass term for Majorana fermions
+        return self.mass * np.eye(2)
+
+    def apply_gamma_matrix(self, matrix_name, vector):
+        # Apply a gamma matrix to a given vector
+        if matrix_name in self.gamma_matrices:
+            return np.dot(self.gamma_matrices[matrix_name], vector)
+        else:
+            raise ValueError("Matrix name not recognized.")
+
+# Example usage:
+if __name__ == '__main__':
+    mass = 1.0  # Mass of the Majorana fermion
+    majorana = MajoranaFermions(mass)
+    
+    # Display the gamma matrices
+    majorana.display_gamma_matrices()
+    
+    # Example vector
+    vector = np.array([1, 0])  # A simple 2-component vector
+    
+    # Apply Gamma^0 matrix to the vector
+    transformed_vector_0 = majorana.apply_gamma_matrix('gamma_0', vector)
+    print("Vector after applying Gamma^0 matrix:\n", transformed_vector_0)
+    
+    # Calculate the mass term
+    mass_term = majorana.mass_term()
+    print("Mass term for Majorana fermions:\n", mass_term)
