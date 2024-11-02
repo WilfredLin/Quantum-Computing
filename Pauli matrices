@@ -1,0 +1,46 @@
+import numpy as np
+
+class PauliMatrices:
+    def __init__(self):
+        self.matrices = self.initialize_matrices()
+
+    def initialize_matrices(self):
+        # Initialize the Pauli matrices
+        sigma_x = np.array([[0, 1], [1, 0]])  # Pauli X matrix
+        sigma_y = np.array([[0, -1j], [1j, 0]])  # Pauli Y matrix
+        sigma_z = np.array([[1, 0], [0, -1]])  # Pauli Z matrix
+        return {'sigma_x': sigma_x, 'sigma_y': sigma_y, 'sigma_z': sigma_z}
+
+    def display_matrices(self):
+        # Display the Pauli matrices
+        for name, matrix in self.matrices.items():
+            print(f"{name}:\n{matrix}\n")
+
+    def apply_matrix(self, matrix_name, vector):
+        # Apply a Pauli matrix to a given vector
+        if matrix_name in self.matrices:
+            return np.dot(self.matrices[matrix_name], vector)
+        else:
+            raise ValueError("Matrix name not recognized.")
+
+# Example usage:
+if __name__ == '__main__':
+    pauli = PauliMatrices()
+    
+    # Display the Pauli matrices
+    pauli.display_matrices()
+    
+    # Example vector
+    vector = np.array([1, 0])  # A simple 2-component vector
+    
+    # Apply Pauli X matrix to the vector
+    transformed_vector_x = pauli.apply_matrix('sigma_x', vector)
+    print("Vector after applying Pauli X matrix:\n", transformed_vector_x)
+    
+    # Apply Pauli Y matrix to the vector
+    transformed_vector_y = pauli.apply_matrix('sigma_y', vector)
+    print("Vector after applying Pauli Y matrix:\n", transformed_vector_y)
+    
+    # Apply Pauli Z matrix to the vector
+    transformed_vector_z = pauli.apply_matrix('sigma_z', vector)
+    print("Vector after applying Pauli Z matrix:\n", transformed_vector_z)
