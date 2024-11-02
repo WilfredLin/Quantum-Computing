@@ -1,0 +1,36 @@
+import numpy as np
+
+class Helicity:
+    def __init__(self, momentum, spin):
+        self.momentum = np.array(momentum)
+        self.spin = spin
+
+    def helicity(self):
+        # Calculate helicity as the projection of spin along the momentum direction
+        momentum_magnitude = np.linalg.norm(self.momentum)
+        if momentum_magnitude == 0:
+            raise ValueError("Momentum cannot be zero for helicity calculation.")
+        
+        # Normalize momentum
+        momentum_unit = self.momentum / momentum_magnitude
+        
+        # Helicity is defined as the dot product of spin and momentum unit vector
+        helicity_value = np.dot(self.spin, momentum_unit)
+        return helicity_value
+
+    def display(self):
+        print("Helicity Properties:")
+        print("Momentum:", self.momentum)
+        print("Spin:", self.spin)
+        print("Helicity:", self.helicity())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define momentum and spin for a particle
+    momentum = [1, 1, 1]  # Example momentum vector in 3D
+    spin = [0, 0, 1]      # Example spin vector in 3D (for a spin-1 particle)
+    
+    helicity = Helicity(momentum, spin)
+    
+    # Display the properties of the helicity
+    helicity.display()
