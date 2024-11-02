@@ -1,0 +1,33 @@
+import numpy as np
+
+class LorentzInvariantInnerProduct:
+    def __init__(self, four_momentum1, four_momentum2):
+        self.four_momentum1 = np.array(four_momentum1)
+        self.four_momentum2 = np.array(four_momentum2)
+
+    def inner_product(self):
+        if len(self.four_momentum1) != 4 or len(self.four_momentum2) != 4:
+            raise ValueError("Four-momentum vectors must be of length 4.")
+        
+        # Calculate the Lorentz invariant inner product
+        # Using the metric signature (-+++)
+        inner_product_value = -self.four_momentum1[0] * self.four_momentum2[0] + \
+                              np.dot(self.four_momentum1[1:], self.four_momentum2[1:])
+        return inner_product_value
+
+    def display(self):
+        print("Lorentz Invariant Inner Product Properties:")
+        print("Four-Momentum 1:", self.four_momentum1)
+        print("Four-Momentum 2:", self.four_momentum2)
+        print("Inner Product:", self.inner_product())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define two four-momentum vectors (energy, px, py, pz)
+    four_momentum1 = [1, 0, 1, 1]  # Example four-momentum vector 1
+    four_momentum2 = [1, 1, 0, 0]  # Example four-momentum vector 2
+    
+    inner_product = LorentzInvariantInnerProduct(four_momentum1, four_momentum2)
+    
+    # Display the properties of the Lorentz invariant inner product
+    inner_product.display()
