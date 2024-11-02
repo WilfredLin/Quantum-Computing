@@ -1,0 +1,37 @@
+import numpy as np
+
+class SpinStatisticsTheorem:
+    def __init__(self, particle_type):
+        self.particle_type = particle_type
+        self.spin = self.get_spin()
+        self.statistics = self.get_statistics()
+
+    def get_spin(self):
+        if self.particle_type == 'fermion':
+            return 1/2  # Example: fermions have spin 1/2
+        elif self.particle_type == 'boson':
+            return 1  # Example: bosons have integer spin
+        else:
+            raise ValueError("Invalid particle type. Choose 'fermion' or 'boson'.")
+
+    def get_statistics(self):
+        if self.particle_type == 'fermion':
+            return 'Fermi-Dirac statistics'
+        elif self.particle_type == 'boson':
+            return 'Bose-Einstein statistics'
+
+    def display(self):
+        print("Spin-Statistics Theorem Properties:")
+        print("Particle Type:", self.particle_type)
+        print("Spin:", self.spin)
+        print("Statistics:", self.statistics)
+
+# Example usage:
+if __name__ == '__main__':
+    # Define particle types
+    fermion = SpinStatisticsTheorem('fermion')
+    boson = SpinStatisticsTheorem('boson')
+    
+    # Display the properties of the Spin-Statistics Theorem
+    fermion.display()
+    boson.display()
