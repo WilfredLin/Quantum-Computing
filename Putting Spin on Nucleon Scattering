@@ -1,0 +1,40 @@
+import numpy as np
+
+class SpinNucleonScattering:
+    def __init__(self, mass_nucleon, coupling_constant, spin):
+        self.mass_nucleon = mass_nucleon  # Mass of the nucleon
+        self.coupling_constant = coupling_constant  # Coupling constant for the interaction
+        self.spin = spin  # Spin of the nucleon
+
+    def lagrangian(self):
+        # Construct the Lagrangian for nucleon scattering with spin
+        return (f"L = ψ̄(iγ^μ∂_μ - {self.mass_nucleon})ψ + "
+                f"{self.coupling_constant}φψ̄ψ")
+
+    def interaction_term(self):
+        # Return the interaction term of the nucleon scattering
+        return f"Interaction Term: -{self.coupling_constant}φψ̄ψ with spin {self.spin}"
+
+    def display_lagrangian(self):
+        print("Nucleon Scattering Lagrangian:")
+        print(self.lagrangian())
+
+    def display_interaction(self):
+        print("Nucleon Interaction:")
+        print(self.interaction_term())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define parameters for the nucleon scattering
+    mass_nucleon = 0.938  # Mass of the nucleon in GeV
+    coupling_constant = 0.5  # Coupling constant for the interaction
+    spin = 1/2  # Spin of the nucleon
+    
+    # Create an instance of SpinNucleonScattering
+    nucleon_scattering = SpinNucleonScattering(mass_nucleon, coupling_constant, spin)
+    
+    # Display the Lagrangian
+    nucleon_scattering.display_lagrangian()
+    
+    # Display the interaction term
+    nucleon_scattering.display_interaction()
