@@ -1,0 +1,41 @@
+import numpy as np
+
+class NucleonMesonScattering:
+    def __init__(self, mass_nucleon, mass_meson, coupling_constant):
+        self.mass_nucleon = mass_nucleon  # Mass of the nucleon
+        self.mass_meson = mass_meson  # Mass of the meson
+        self.coupling_constant = coupling_constant  # Coupling constant for the interaction
+
+    def lagrangian(self):
+        # Construct the Lagrangian for nucleon to meson scattering
+        return (f"L = ψ̄(iγ^μ∂_μ - {self.mass_nucleon})ψ + "
+                f"{self.coupling_constant}φψ̄ψ - "
+                f"1/2(∂_μφ∂^μφ - {self.mass_meson}^2φ^2)")
+
+    def interaction_term(self):
+        # Return the interaction term of the nucleon to meson scattering
+        return f"Interaction Term: -{self.coupling_constant}φψ̄ψ"
+
+    def display_lagrangian(self):
+        print("Nucleon to Meson Scattering Lagrangian:")
+        print(self.lagrangian())
+
+    def display_interaction(self):
+        print("Nucleon to Meson Interaction:")
+        print(self.interaction_term())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define parameters for the nucleon to meson scattering
+    mass_nucleon = 0.938  # Mass of the nucleon in GeV
+    mass_meson = 0.140  # Mass of the meson in GeV
+    coupling_constant = 0.5  # Coupling constant for the interaction
+    
+    # Create an instance of NucleonMesonScattering
+    nucleon_meson_scattering = NucleonMesonScattering(mass_nucleon, mass_meson, coupling_constant)
+    
+    # Display the Lagrangian
+    nucleon_meson_scattering.display_lagrangian()
+    
+    # Display the interaction term
+    nucleon_meson_scattering.display_interaction()
