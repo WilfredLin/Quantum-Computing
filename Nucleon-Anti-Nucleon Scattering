@@ -1,0 +1,42 @@
+import numpy as np
+
+class NucleonAntiNucleonScattering:
+    def __init__(self, mass_nucleon, mass_antineutron, coupling_constant):
+        self.mass_nucleon = mass_nucleon  # Mass of the nucleon
+        self.mass_antineutron = mass_antineutron  # Mass of the antineutron
+        self.coupling_constant = coupling_constant  # Coupling constant for the interaction
+
+    def lagrangian(self):
+        # Construct the Lagrangian for nucleon-anti-nucleon scattering
+        return (f"L = ψ̄(iγ^μ∂_μ - {self.mass_nucleon})ψ + "
+                f"ψ̄̄(iγ^μ∂_μ - {self.mass_antineutron})ψ̄ + "
+                f"{self.coupling_constant}φψ̄ψ̄ - "
+                f"1/2(∂_μφ∂^μφ - {self.mass_antineutron}^2φ^2)")
+
+    def interaction_term(self):
+        # Return the interaction term of the nucleon-anti-nucleon scattering
+        return f"Interaction Term: -{self.coupling_constant}φψ̄ψ̄"
+
+    def display_lagrangian(self):
+        print("Nucleon-Anti-Nucleon Scattering Lagrangian:")
+        print(self.lagrangian())
+
+    def display_interaction(self):
+        print("Nucleon-Anti-Nucleon Interaction:")
+        print(self.interaction_term())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define parameters for the nucleon-anti-nucleon scattering
+    mass_nucleon = 0.938  # Mass of the nucleon in GeV
+    mass_antineutron = 0.939  # Mass of the antineutron in GeV
+    coupling_constant = 0.5  # Coupling constant for the interaction
+    
+    # Create an instance of NucleonAntiNucleonScattering
+    nucleon_anti_nucleon_scattering = NucleonAntiNucleonScattering(mass_nucleon, mass_antineutron, coupling_constant)
+    
+    # Display the Lagrangian
+    nucleon_anti_nucleon_scattering.display_lagrangian()
+    
+    # Display the interaction term
+    nucleon_anti_nucleon_scattering.display_interaction()
