@@ -1,0 +1,50 @@
+import numpy as np
+
+class GaugeSymmetry:
+    def __init__(self, gauge_field_mass, coupling_constant):
+        self.gauge_field_mass = gauge_field_mass  # Mass of the gauge field
+        self.coupling_constant = coupling_constant  # Coupling constant for the interaction
+
+    def lagrangian(self):
+        # Construct the Lagrangian for gauge symmetry
+        return (f"L = -1/4 F_{μν}F^{μν} + "
+                f"1/2(∂_μφ)^2 - {self.gauge_field_mass}^2φ^2 - "
+                f"{self.coupling_constant}φJ^μA_μ")
+
+    def field_strength_tensor(self):
+        # Return the field strength tensor for the gauge field
+        return f"Field Strength Tensor: F_{μν} = ∂_μA_ν - ∂_νA_μ"
+
+    def interaction_term(self):
+        # Return the interaction term of the gauge symmetry
+        return f"Interaction Term: -{self.coupling_constant}φJ^μA_μ"
+
+    def display_lagrangian(self):
+        print("Gauge Symmetry Lagrangian:")
+        print(self.lagrangian())
+
+    def display_field_strength(self):
+        print("Field Strength Tensor:")
+        print(self.field_strength_tensor())
+
+    def display_interaction(self):
+        print("Gauge Interaction:")
+        print(self.interaction_term())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define parameters for the gauge symmetry
+    gauge_field_mass = 0.1  # Mass of the gauge field in GeV
+    coupling_constant = 0.5  # Coupling constant for the interaction
+    
+    # Create an instance of GaugeSymmetry
+    gauge_symmetry = GaugeSymmetry(gauge_field_mass, coupling_constant)
+    
+    # Display the Lagrangian
+    gauge_symmetry.display_lagrangian()
+    
+    # Display the field strength tensor
+    gauge_symmetry.display_field_strength()
+    
+    # Display the interaction term
+    gauge_symmetry.display_interaction()
