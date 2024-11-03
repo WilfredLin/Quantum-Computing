@@ -1,0 +1,41 @@
+import numpy as np
+
+class YukawaTheory:
+    def __init__(self, mass_phi, mass_psi, coupling_constant):
+        self.mass_phi = mass_phi  # Mass of the scalar field
+        self.mass_psi = mass_psi  # Mass of the fermionic field
+        self.coupling_constant = coupling_constant  # Yukawa coupling constant
+
+    def lagrangian(self):
+        # Construct the Lagrangian for the Yukawa theory
+        return (f"L = ψ̄(iγ^μ∂_μ - {self.mass_psi})ψ + "
+                f"∂^μφ∂_μφ - {self.mass_phi}^2φ^2 - "
+                f"{self.coupling_constant}φψ̄ψ")
+
+    def interaction_term(self):
+        # Return the interaction term of the Yukawa theory
+        return f"Interaction Term: -{self.coupling_constant}φψ̄ψ"
+
+    def display_lagrangian(self):
+        print("Yukawa Theory Lagrangian:")
+        print(self.lagrangian())
+
+    def display_interaction(self):
+        print("Yukawa Interaction:")
+        print(self.interaction_term())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define parameters for the Yukawa theory
+    mass_phi = 1.0  # Mass of the scalar field
+    mass_psi = 0.5  # Mass of the fermionic field
+    coupling_constant = 0.1  # Yukawa coupling constant
+    
+    # Create an instance of YukawaTheory
+    yukawa = YukawaTheory(mass_phi, mass_psi, coupling_constant)
+    
+    # Display the Lagrangian
+    yukawa.display_lagrangian()
+    
+    # Display the interaction term
+    yukawa.display_interaction()
