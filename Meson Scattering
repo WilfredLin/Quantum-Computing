@@ -1,0 +1,41 @@
+import numpy as np
+
+class MesonScattering:
+    def __init__(self, mass_meson1, mass_meson2, coupling_constant):
+        self.mass_meson1 = mass_meson1  # Mass of the first meson
+        self.mass_meson2 = mass_meson2  # Mass of the second meson
+        self.coupling_constant = coupling_constant  # Coupling constant for the interaction
+
+    def lagrangian(self):
+        # Construct the Lagrangian for meson scattering
+        return (f"L = 1/2(∂_μφ_1∂^μφ_1 - {self.mass_meson1}^2φ_1^2) + "
+                f"1/2(∂_μφ_2∂^μφ_2 - {self.mass_meson2}^2φ_2^2) + "
+                f"{self.coupling_constant}φ_1φ_2^2")
+
+    def interaction_term(self):
+        # Return the interaction term of the meson scattering
+        return f"Interaction Term: -{self.coupling_constant}φ_1φ_2^2"
+
+    def display_lagrangian(self):
+        print("Meson Scattering Lagrangian:")
+        print(self.lagrangian())
+
+    def display_interaction(self):
+        print("Meson Interaction:")
+        print(self.interaction_term())
+
+# Example usage:
+if __name__ == '__main__':
+    # Define parameters for the meson scattering
+    mass_meson1 = 0.140  # Mass of the first meson in GeV
+    mass_meson2 = 0.135  # Mass of the second meson in GeV
+    coupling_constant = 0.3  # Coupling constant for the interaction
+    
+    # Create an instance of MesonScattering
+    meson_scattering = MesonScattering(mass_meson1, mass_meson2, coupling_constant)
+    
+    # Display the Lagrangian
+    meson_scattering.display_lagrangian()
+    
+    # Display the interaction term
+    meson_scattering.display_interaction()
