@@ -1,0 +1,30 @@
+import numpy as np
+from scipy.optimize import minimize
+
+# Objective function: f(x) = 0.5 * x^T * Q * x + c^T * x
+def objective(x):
+    return 0.5 * np.dot(x.T, np.dot(Q, x)) + np.dot(c, x)
+
+# Constraints: A * x <= b
+def constraint_func(x):
+    return b - np.dot(A, x)
+
+# Parameters
+n = 2  # Number of variables
+Q = np.array([[2, 0], [0, 2]])  # Quadratic coefficients
+c = np.array([-2, -5])  # Linear coefficients
+A = np.array([[1, 2], [2, 1]])  # Coefficients for constraints
+b = np.array([10, 8])  # Right-hand side of constraints
+
+# Define constraints in the format required by 'minimize'
+constraints = [{'type': 'ineq', 'fun': constraint_func}]
+
+# Initial guess
+x0 = np.zeros(n)
+
+# Solve the optimization problem
+solution = minimize(objective, x0, constraints=constraints)
+
+# Output the results
+print("Optimal value of x:", solution.x)
+print("Optimal objective value:", solution.fun)
