@@ -1,0 +1,24 @@
+import numpy as np
+from scipy.optimize import minimize
+
+# Objective function for Quadratic Unconstrained Binary Optimization: f(x) = 0.5 * x^T * Q * x + c^T * x
+def objective(x):
+    return 0.5 * np.dot(x.T, np.dot(Q, x)) + np.dot(c, x)
+
+# Parameters
+n = 2  # Number of binary variables
+Q = np.array([[2, -1], [-1, 2]])  # Quadratic coefficients
+c = np.array([-2, -5])  # Linear coefficients
+
+# Initial guess (binary variables should be 0 or 1)
+x0 = np.random.randint(0, 2, size=n)
+
+# Define bounds for binary variables (0 and 1)
+bounds = [(0, 1) for _ in range(n)]
+
+# Solve the optimization problem using a method suitable for binary variables
+solution = minimize(objective, x0, bounds=bounds, method='SLSQP', options={'disp': True})
+
+# Output the results
+print("Optimal value of x:", np.round(solution.x))
+print("Optimal objective value:", solution.fun)
