@@ -1,0 +1,40 @@
+import numpy as np
+from scipy.optimize import minimize
+from qiskit import QuantumCircuit, Aer, execute
+
+class HybridSolver:
+    def __init__(self, num_qubits):
+        self.num_qubits = num_qubits
+        self.backend = Aer.get_backend('statevector_simulator')
+
+    def create_circuit(self, params):
+        circuit = QuantumCircuit(self.num_qubits)
+        for i in range(self.num_qubits):
+            circuit.rx(params[i], i)
+        circuit.measure_all()
+        return circuit
+
+    def run_circuit(self, params):
+        circuit = self.create_circuit(params)
+        job = execute(circuit, backend=self.backend, shots=1024)
+        result = job.result()
+        counts = result.get_counts(circuit)
+        return counts
+
+    def objective_function(self, params):
+        counts = self.run_circuit(params)
+        # Here, you can define your objective function based on counts
+        # For example, we can minimize the probability of measuring a specific state
+        target_state = '0' * self.num_qubits
+        return 1 - counts.get(target_state, 0) / 1024
+
+    def optimize(self):
+        initial_params = np.random.rand(self.num_qubits) * 2 * np.pi
+        result = minimize(self.objective_function, initial_params, method='COBYLA')
+        return result
+
+# Example usage:
+if __name__ == '__main__':
+    solver = HybridSolver(num_qubits=3)
+    optimization_result = solver.optimize()
+    print('Optimized parameters:', optimization_result.x)
