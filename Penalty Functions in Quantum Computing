@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class PenaltyFunctionQuantum:
+    def __init__(self, num_variables, penalty_coefficient):
+        self.num_variables = num_variables
+        self.penalty_coefficient = penalty_coefficient
+        self.solutions = np.random.rand(num_variables)
+
+    def objective_function(self, x):
+        # Example objective function: f(x) = sum(x^2)
+        return np.sum(x**2)
+
+    def penalty_function(self, x):
+        # Example constraint: x[i] must be between 0 and 1
+        penalty = 0
+        for i in range(self.num_variables):
+            if x[i] < 0 or x[i] > 1:
+                penalty += self.penalty_coefficient * (abs(x[i]) + abs(x[i] - 1))
+        return penalty
+
+    def total_cost(self, x):
+        return self.objective_function(x) + self.penalty_function(x)
+
+    def optimize(self, iterations):
+        best_solution = self.solutions
+        best_cost = self.total_cost(best_solution)
+
+        for _ in range(iterations):
+            new_solution = best_solution + np.random.normal(0, 0.1, self.num_variables)
+            new_cost = self.total_cost(new_solution)
+
+            if new_cost < best_cost:
+                best_solution = new_solution
+                best_cost = new_cost
+
+        return best_solution, best_cost
+
+# Parameters
+num_variables = 5
+penalty_coefficient = 10
+iterations = 1000
+
+# Create Penalty Function Quantum model
+penalty_model = PenaltyFunctionQuantum(num_variables, penalty_coefficient)
+best_solution, best_cost = penalty_model.optimize(iterations)
+
+print("Best Solution:", best_solution)
+print("Best Cost:", best_cost)
